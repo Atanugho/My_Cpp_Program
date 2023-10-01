@@ -9,17 +9,19 @@ int n=5;
 int k=2;
 k=k%n;
 
-int ansarr[5];
+int ansArr[5];
 int j=0;
 for(int i=n-k;i<n;i++){
-    ansarr[j++]=arr[i];
+    ansArr[j++]=arr[i];
 }
+
 //inserting n-k elements In an array 
+
 for(int i=0;i<=k;i++){
-    ansarr[j++]=arr[i];
+    ansArr[j++]=arr[i];
 }
 for(int i=0;i<n;i++){
-    cout<<ansarr[i]<<" ";
+    cout<<ansArr[i]<<" ";
 }
 cout<<endl;
 return 0;    

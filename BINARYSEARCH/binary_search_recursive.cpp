@@ -4,7 +4,11 @@
 using namespace std;
 
 int binarySearch(vector<int >&input ,int target,int lo,int hi){
-    if(lo>hi) return -1;
+
+    if(lo>hi){
+        return -1;
+    } 
+
     int mid =lo+(hi-lo)/2;
     if(input[mid]==target) return mid;
     if(input[mid]<target){
