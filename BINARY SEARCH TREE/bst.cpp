@@ -21,6 +21,8 @@ class BST{
     }    
 };
 
+
+
 void insertBST(Node* &root,int val){
     Node* newNode = new Node(val);
     if(root == NULL){
@@ -47,6 +49,9 @@ void insertBST(Node* &root,int val){
     }
 }
 
+
+
+
 Node* insertBSTRecursive(Node* root,int val){
     if(root==NULL){
         Node* newNode = new Node(val);
@@ -61,6 +66,76 @@ Node* insertBSTRecursive(Node* root,int val){
     }
     return root;
 }
+
+
+
+
+bool searchBST(Node* root,int key){
+
+    if(root==NULL){
+        return false;
+    }
+    if(root->value==key){
+        return true;
+    }
+    
+    if(root->value<key){
+        return searchBST(root->right,key);
+    }
+    if(root->value>key){
+        return searchBST(root->left,key);
+    }
+}
+
+
+
+
+
+Node* largestNodeBst(Node *root){
+    Node * curr = root;
+    while(curr && curr->right){
+        curr = curr->right;
+    }
+    return curr;
+}
+
+Node* deleteBST(Node* root,int key){
+
+    if(root==NULL){
+        return root;
+    }
+    if(root->value<key){
+        root->right = deleteBST(root->right,key);
+    }
+    else if(root->value>key){
+        root->left = deleteBST(root->left,key);
+    }
+    else{
+        if(root->left == NULL && root->right == NULL){
+            free(root);
+            return NULL;
+        }
+        else if(root->left == NULL){
+            Node *temp = root->right;
+            free(root);
+            return temp;
+        }
+        else if(root->right == NULL){
+            Node *temp = root->left;
+            free(root);
+            return temp;
+        }
+        else{
+            Node* justSmallerNode = largestNodeBst(root->left);
+            root->value = justSmallerNode->value;
+            root->left = deleteBST(root->left,justSmallerNode->value);
+        }
+    }
+    return root;
+}
+
+
+
 
 void inOrderTraversal(Node* root){
 
@@ -82,6 +157,13 @@ insertBSTRecursive(bst.root,6);
 insertBSTRecursive(bst.root,2);
 
 inOrderTraversal(bst.root);
+cout<<endl;
+
+// cout<<searchBST(bst.root,8)<<endl;
+
+bst.root = deleteBST(bst.root,6);
+inOrderTraversal(bst.root);
+cout<<endl;
 
 return 0;    
 }
