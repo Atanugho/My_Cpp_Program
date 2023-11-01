@@ -48,7 +48,7 @@ for(int i=0;i<n;i++){
 }
 int target;
 cin>>target;
-std::vector<int>result;
+vector<int>result;
 int lb=lowerBound(input,target);
 if(input[lb]!=target){
     result.push_back(-1);
