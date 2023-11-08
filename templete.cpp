@@ -1,56 +1,64 @@
 
-#include<iostream>
-using namespace std;
-class Node{
-public:
-      int val;
-      Node* next;
-      
-      Node(int data){
-        val=data;
-        next=NULL;
-      }
-};
-class LinkList{
-public:
-       Node* head;
+/*
+Write a C program to sort records containing roll, name, and marks 
+of n students in ascending order of marks they obtained using Selection Sort.
 
-       LinkList(){
-        head=NULL;
-       } 
-    void insertAtTail(int value){
+*/
 
-        Node* new_node=new Node(value);
-        if(head==NULL){
-            head=new_node;
-            return;
+#include <stdio.h>
+#include <string.h>
+
+typedef struct Student {
+    int roll;
+    char name[50];
+    float marks;
+}stu;
+
+void selectionSort( stu arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j].marks < arr[minIndex].marks) {
+                minIndex = j;
+            }
         }
-        Node* temp=head;
-        while(temp->next!=NULL){
-            temp=temp->next;
+
+        if (minIndex != i) {
+            
+            stu temp = arr[i];
+            arr[i] = arr[minIndex];
+            arr[minIndex] = temp;
         }
-        temp->next=new_node;
-    } 
-    void display(){
-        Node* temp=head;
-        while(temp!=NULL){
-            cout<<temp->val<<"->";
-            temp=temp->next;
-        }cout<<"NULL"<<endl;
-    }     
-};
-
-int main(){
-
-LinkList ll;
-ll.insertAtTail(1);
-ll.insertAtTail(2);
-ll.insertAtTail(3);
-ll.insertAtTail(4);
-ll.insertAtTail(5);
-ll.insertAtTail(6);
-ll.display();
-
-return 0;
+    }
 }
 
+int main() {
+    int n;
+
+    printf("Enter the number of students: ");
+    scanf("%d", &n);
+
+    stu students[n];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter details for student %d:\n", i+1 );
+        students[i].roll = i + 1;
+
+        printf("Name: ");
+        scanf("%s", students[i].name);
+
+        printf("Marks: ");
+        scanf("%f", &students[i].marks);
+    }
+
+    selectionSort(students, n);
+
+    printf("\nSorted list of students in ascending order of marks:\n");
+    printf("Roll\tName\tMarks\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\t%s\t%.2f\n", students[i].roll, students[i].name, students[i].marks);
+    }
+
+    return 0;
+}
