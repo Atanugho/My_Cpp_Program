@@ -48,7 +48,7 @@ int main() {
     cout << "Enter the first complex number: ";
     cin >> c1;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    //cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     cout << "Enter the second complex number:";
     cin>>c2;

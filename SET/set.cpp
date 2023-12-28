@@ -13,10 +13,12 @@ set1.insert(5);
 
 cout<<set1.size()<<endl;
 
+
 //set<int>::iterator itr;
 // for(itr = set1.begin();itr != set1.end();itr++){
 //     cout<<*itr<<" ";
 // }cout<<endl;
+
 for(auto value:set1){
     cout<<value<<" ";
 }cout<<endl;
