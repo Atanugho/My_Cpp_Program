@@ -58,7 +58,8 @@ bool isPalindrome(Node* head){
     while(curr!=NULL){
         Node* nextNode= curr->next;
         curr->next = prev;
-        prev=curr;curr = nextNode;
+        prev=curr; 
+        curr = nextNode;
     }
     //step 4-to check if the two linked list are equal
     Node* head1 = head;
@@ -78,10 +79,10 @@ int main(){
 LinkList ll;
 ll.insertAtTail(1);
 ll.insertAtTail(2);
-ll.insertAtTail(3);
-ll.insertAtTail(3);
 ll.insertAtTail(2);
 ll.insertAtTail(1);
+// ll.insertAtTail(2);
+// ll.insertAtTail(1);
 ll.display();
 cout<<isPalindrome(ll.head)<<endl;
 return 0;    

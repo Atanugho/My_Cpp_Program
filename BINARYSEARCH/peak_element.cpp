@@ -6,7 +6,7 @@ using namespace std;
 int peakInArray(vector<int >&input){
     int lo=1;
     int hi=input.size()-1;
-     int ans=-1;
+    int ans=-1;
     while(lo<=hi){
         int mid=lo+(hi-lo)/2;
         if(input[mid]>input[mid-1]){
