@@ -20,7 +20,7 @@ void heapify(int arr[],int &size,int curr){
     }
 }
 
-int main(){  //1.22.30
+int main(){  
 
     int arr[N] = {-1,60,10,80,50,5,20,70};
     int size = 7;
