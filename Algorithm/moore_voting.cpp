@@ -20,6 +20,7 @@ int findMajorityElement(vector<int>& nums) {
 
     // At this point, candidate holds a potential majority element.
     // Verify if it's the majority element.
+    
     count = 0;
     for (int num : nums) {
         if (num == candidate) {
