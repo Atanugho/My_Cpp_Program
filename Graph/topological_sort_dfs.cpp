@@ -4,36 +4,36 @@
 
 using namespace std;
 
-void dfs(int node, vector<bool>& visited, vector<vector<int>>& graph, stack<int>& result) {
-	visited[node] = true;
+void dfs(int u, vector<bool>& visited, vector<vector<int>>& graph, stack<int>& st) {
+	visited[u] = true;
 
-	for (int neighbor : graph[node]) {
-		if (!visited[neighbor]) {
-			dfs(neighbor, visited, graph, result);
+	for (int v : graph[u]) {
+		if (!visited[v]) {
+			dfs(v, visited, graph, st);
 		}
 	}
 
-	result.push(node);
+	st.push(u);
 }
 
 vector<int> topologicalSort(vector<vector<int>>& graph) {
 	int n = graph.size();
 	vector<bool> visited(n, false);
-	stack<int> result;
+	stack<int> st;
 
 	for (int i = 0; i < n; i++) {
 		if (!visited[i]) {
-			dfs(i, visited, graph, result);
+			dfs(i, visited, graph, st);
 		}
 	}
 
-	vector<int> sorted;
-	while (!result.empty()) {
-		sorted.push_back(result.top());
-		result.pop();
+	vector<int> result;
+	while (!st.empty()) {
+		result.push_back(st.top());
+		st.pop();
 	}
 
-	return sorted;
+	return result;
 }
 
 int main() {

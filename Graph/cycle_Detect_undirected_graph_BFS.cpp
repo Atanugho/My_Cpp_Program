@@ -1,24 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <queue>
 
-bool isCycleBFS(vector<int> adj[],int u,vector<bool> &visited){
+using namespace std;
 
-    queue<pair<int,int>> qu;
+bool isCyclic(vector<vector<int>>& graph, int start) {
+    int n = graph.size();
+    vector<bool> visited(n, false);
+    vector<int> parent(n, -1);
 
-    qu.push({u,-1});
-    visited[u] = true;
+    queue<int> q;
+    q.push(start);
+    visited[start] = true;
 
-    while(!qu.empty()){
-        pair<int,int> p = qu.front();
-        qu.pop();
+    while (!q.empty()) {
+        int curr = q.front();
+        q.pop();
 
-        int source = p.first;
-        int parent = p.second;
-
-        for(int &v : adj[source]){
-
-            if(visited[v] == false){
-                visited[v] = true;
-                qu.push({v,source});
-            }else if(v != parent) {
+        for (int neighbor : graph[curr]) {
+            if (!visited[neighbor]) {
+                visited[neighbor] = true;
+                q.push(neighbor);
+                parent[neighbor] = curr;
+            } else if (parent[curr] != neighbor) {
+                // If the neighbor is already visited and not the parent of the current node,
+                // then there is a cycle in the graph.
                 return true;
             }
         }
@@ -27,16 +33,32 @@ bool isCycleBFS(vector<int> adj[],int u,vector<bool> &visited){
     return false;
 }
 
-bool isCycle(int V,vector<int> adj[]){
+int main() {
+    int n, m;
+    cout << "Enter the number of vertices: ";
+    cin >> n;
+    cout << "Enter the number of edges: ";
+    cin >> m;
 
-    vector<bool> visited(V,false);
+    vector<vector<int>> graph(n);
 
-    for(int  i = 0 ;i < V ;i++){
-
-        if(!visited[i] && isCycleBFS(adj,i,visited)){
-            return true;
-        }
+    cout << "Enter the edges:\n";
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
     }
 
-    return false;
+    int start;
+    cout << "Enter the starting vertex: ";
+    cin >> start;
+
+    if (isCyclic(graph, start)) {
+        cout << "Cycle detected in the graph.\n";
+    } else {
+        cout << "No cycle detected in the graph.\n";
+    }
+
+    return 0;
 }

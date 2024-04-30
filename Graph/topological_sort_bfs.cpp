@@ -17,15 +17,15 @@ vector<int> topologicalSort(vector<vector<int>>& graph, vector<int>& inDegree) {
 	}
 
 	while (!q.empty()) {
-		int node = q.front();
+		int u = q.front();
 		q.pop();
-		result.push_back(node);
+		result.push_back(u);
 
 		// Reduce in-degree of adjacent nodes
-		for (int neighbor : graph[node]) {
-			inDegree[neighbor]--;
-			if (inDegree[neighbor] == 0) {
-				q.push(neighbor);
+		for (int v : graph[u]) {
+			inDegree[v]--;
+			if (inDegree[v] == 0) {
+				q.push(v);
 			}
 		}
 	}
