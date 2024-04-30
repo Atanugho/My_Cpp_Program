@@ -1,41 +1,64 @@
-class Solution
-{
-	public:
-	
-	void DFS(vector<int> adj[], int u, vector<bool>& visited, stack<int>& st) {
-	    visited[u] = true;
-	    
-	    
-	    //pehle mere ('u' ke node ke ) bachho ko daalo
-	    for(int &v : adj[u]) {
-	        if(!visited[v])
-	            DFS(adj, v, visited, st);
-	    }
-	    
-	    
-	    //ab mujhe daalo stack me
-	    st.push(u);
-	    
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+void dfs(int node, vector<bool>& visited, vector<vector<int>>& graph, stack<int>& result) {
+	visited[node] = true;
+
+	for (int neighbor : graph[node]) {
+		if (!visited[neighbor]) {
+			dfs(neighbor, visited, graph, result);
+		}
 	}
-	
-	//Function to return list containing vertices in Topological order. 
-	vector<int> topoSort(int V, vector<int> adj[]) 
-	{
-	    vector<bool> visited(V, false);
-	    stack<int> st;
-	    
-	    for(int i = 0; i<V; i++) {
-	        if(!visited[i])
-	            DFS(adj, i, visited, st);
-	    }
-	    
-	    vector<int> result;
-	    
-	    while(!st.empty()) {
-	        result.push_back(st.top());
-	        st.pop();
-	    }
-	    
-	    return result;
+
+	result.push(node);
+}
+
+vector<int> topologicalSort(vector<vector<int>>& graph) {
+	int n = graph.size();
+	vector<bool> visited(n, false);
+	stack<int> result;
+
+	for (int i = 0; i < n; i++) {
+		if (!visited[i]) {
+			dfs(i, visited, graph, result);
+		}
 	}
-};
+
+	vector<int> sorted;
+	while (!result.empty()) {
+		sorted.push_back(result.top());
+		result.pop();
+	}
+
+	return sorted;
+}
+
+int main() {
+	int n, m;
+	cout << "Enter the number of nodes: ";
+	cin >> n;
+	cout << "Enter the number of edges: ";
+	cin >> m;
+
+	vector<vector<int>> graph(n);
+
+	cout << "Enter the edges:\n";
+	for (int i = 0; i < m; i++) {
+		int u, v;
+		cin >> u >> v;
+		graph[u].push_back(v);
+	}
+
+	vector<int> sorted = topologicalSort(graph);
+
+	cout << "Topological Sort: ";
+	for (int node : sorted) {
+		cout << node << " ";
+	}
+	cout << endl;
+
+	return 0;
+}

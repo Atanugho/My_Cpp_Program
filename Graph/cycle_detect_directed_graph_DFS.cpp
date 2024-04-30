@@ -1,16 +1,17 @@
 #include <iostream>
 #include <vector>
 
+
 using namespace std;
 
-bool isCyclicUtil(vector<vector<int>>& graph, int v, vector<bool>& visited, vector<bool>& recursionStack) {
+bool isCyclicDFS(vector<vector<int>>& graph, int v, vector<bool>& visited, vector<bool>& recursionStack) {
     if (!visited[v]) {
         visited[v] = true;
         recursionStack[v] = true;
 
         for (int i = 0; i < graph[v].size(); i++) {
             int neighbor = graph[v][i];
-            if (!visited[neighbor] && isCyclicUtil(graph, neighbor, visited, recursionStack))
+            if (!visited[neighbor] && isCyclicDFS(graph, neighbor, visited, recursionStack))
                 return true;
             else if (recursionStack[neighbor])
                 return true;
@@ -21,12 +22,12 @@ bool isCyclicUtil(vector<vector<int>>& graph, int v, vector<bool>& visited, vect
     return false;
 }
 
-bool isCyclic(vector<vector<int>>& graph, int numVertices) {
-    vector<bool> visited(numVertices, false);
-    vector<bool> recursionStack(numVertices, false);
+bool isCyclic(vector<vector<int>>& graph, int V) {
+    vector<bool> visited(V, false);
+    vector<bool> recursionStack(V, false);
 
-    for (int i = 0; i < numVertices; i++) {
-        if (isCyclicUtil(graph, i, visited, recursionStack))
+    for (int i = 0; i < V; i++) {
+        if (!visited[i] && isCyclicDFS(graph, i, visited, recursionStack))
             return true;
     }
 
@@ -34,13 +35,13 @@ bool isCyclic(vector<vector<int>>& graph, int numVertices) {
 }
 
 int main() {
-    int numVertices, numEdges;
+    int V, numEdges;
     cout << "Enter the number of vertices: ";
-    cin >> numVertices;
+    cin >> V;
     cout << "Enter the number of edges: ";
     cin >> numEdges;
 
-    vector<vector<int>> graph(numVertices);
+    vector<vector<int>> graph(V);
 
     cout << "Enter the edges (source and destination):" << endl;
     for (int i = 0; i < numEdges; i++) {
@@ -49,7 +50,7 @@ int main() {
         graph[src].push_back(dest);
     }
 
-    if (isCyclic(graph, numVertices))
+    if (isCyclic(graph, V))
         cout << "The graph contains a cycle." << endl;
     else
         cout << "The graph does not contain a cycle." << endl;
