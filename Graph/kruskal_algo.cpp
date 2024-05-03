@@ -5,45 +5,39 @@
 
 using namespace std;
 
-// Structure to represent an edge
 struct Edge {
     int src, dest, weight;
 };
 
-// Structure to represent a disjoint set
-struct DisjointSet {
+struct DSU {
     unordered_map<int, int> parent;
     unordered_map<int, int> rank;
 };
 
-// Find operation of disjoint sets
-int find(DisjointSet& ds, int v) {
+int find(DSU& ds, int v) {
     if (ds.parent[v] != v)
         ds.parent[v] = find(ds, ds.parent[v]);
     return ds.parent[v];
 }
 
-// Union operation of disjoint sets
-void Union(DisjointSet& ds, int x, int y) {
-    int xroot = find(ds, x);
-    int yroot = find(ds, y);
+void Union(DSU& ds, int x, int y) {
+    int x_parent = find(ds, x);
+    int y_parent = find(ds, y);
 
-    if (ds.rank[xroot] < ds.rank[yroot])
-        ds.parent[xroot] = yroot;
-    else if (ds.rank[xroot] > ds.rank[yroot])
-        ds.parent[yroot] = xroot;
+    if (ds.rank[x_parent] < ds.rank[y_parent])
+        ds.parent[x_parent] = y_parent;
+    else if (ds.rank[x_parent] > ds.rank[y_parent])
+        ds.parent[y_parent] = x_parent;
     else {
-        ds.parent[yroot] = xroot;
-        ds.rank[xroot]++;
+        ds.parent[y_parent] = x_parent;
+        ds.rank[x_parent]++;
     }
 }
 
-// Function to perform Kruskal's algorithm
 vector<Edge> kruskalMST(unordered_map<int, vector<pair<int, int>>>& graph) {
     vector<Edge> result;
     vector<Edge> edges;
 
-    // Convert the graph into a vector of edges
     for (auto& it : graph) {
         int src = it.first;
         for (auto& edge : it.second) {
@@ -53,43 +47,48 @@ vector<Edge> kruskalMST(unordered_map<int, vector<pair<int, int>>>& graph) {
         }
     }
 
-    // Sort the edges in ascending order of their weights
+    
     sort(edges.begin(), edges.end(), [](const Edge& a, const Edge& b) {
         return a.weight < b.weight;
     });
 
-    DisjointSet ds;
+    DSU ds;
 
-    // Initialize disjoint set for each vertex
+    //initialisze rank = 0 and parent itslef and find edge
     for (auto& it : graph) {
         int v = it.first;
         ds.parent[v] = v;
         ds.rank[v] = 0;
     }
 
-    // Process each edge in sorted order
-    for (const auto& edge : edges) {
-        int src = edge.src;
-        int dest = edge.dest;
+    int sum = 0;
 
-        int srcRoot = find(ds, src);
-        int destRoot = find(ds, dest);
+    for (const auto& edge : edges) {
+        int u = edge.src;
+        int v = edge.dest;
+        int wt = edge.weight;
+
+        int parent_u = find(ds, u);
+        int parent_v = find(ds, v);
 
         // If including this edge does not form a cycle, add it to the result
-        if (srcRoot != destRoot) {
+        if (parent_u != parent_v) {
             result.push_back(edge);
-            Union(ds, srcRoot, destRoot);
+            sum += wt;
+            Union(ds, parent_u, parent_v);
         }
+
     }
+
+    cout << "Minimum Cost Of Minimum Spanning Tree:" << sum<<"\n";
 
     return result;
 }
 
 int main() {
-    // Create the graph using unordered map
+    
     unordered_map<int, vector<pair<int, int>>> graph;
 
-    // Add edges to the graph
     graph[0] = {{1, 5}, {3, 20}};
     graph[1] = {{0, 5}, {2, 5}};
     graph[2] = {{1, 5}, {3, 5}};
@@ -98,7 +97,6 @@ int main() {
     graph[5] = {{4, 2}, {6, 2}};
     graph[6] = {{4, 4}, {5, 2}};
 
-    // Find the minimum spanning tree using Kruskal's algorithm
     vector<Edge> mst = kruskalMST(graph);
 
     // Print the minimum spanning tree
