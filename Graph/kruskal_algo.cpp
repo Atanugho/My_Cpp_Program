@@ -99,7 +99,6 @@ int main() {
 
     vector<Edge> mst = kruskalMST(graph);
 
-    // Print the minimum spanning tree
     cout << "Minimum Spanning Tree:" << endl;
     for (const auto& edge : mst) {
         cout << edge.src << " - " << edge.dest << " : " << edge.weight << endl;

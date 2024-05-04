@@ -28,10 +28,10 @@ void Union(int x,int y){
     }
 
     if(rank_[x_parent] > rank_[y_parent]){
-        parent[y] = x_parent;
+        parent[y_parent] = x_parent;
     }
     else if(rank_[y_parent] > rank_[x_parent]){
-        parent[x] = y_parent;
+        parent[x_parent] = y_parent;
     }
     else{
         parent[x_parent] = y_parent;
